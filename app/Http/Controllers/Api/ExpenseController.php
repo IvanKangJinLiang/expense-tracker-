@@ -8,13 +8,11 @@ use Illuminate\Http\Request;
 
 class ExpenseController extends Controller
 {
-    // GET /api/expenses
     public function index()
     {
         return Expense::orderBy('expense_date', 'desc')->get();
     }
 
-    // POST /api/expenses
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -41,10 +39,8 @@ class ExpenseController extends Controller
             'expense_date'  => 'required|date',
         ]);
 
-        // 3. Update the expense using Eloquent
         $expense->update($validated);
 
-        // 4. Return the updated item
         return response()->json($expense);
     }
 

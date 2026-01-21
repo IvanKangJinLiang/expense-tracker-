@@ -1,11 +1,11 @@
 # Expense Tracker
 
-A full-stack Expense Tracker application built with **Laravel** and **Vue 3**. This application allows users to manage daily expenses with features including creating, viewing, updating, and deleting records (CRUD). It utilizes a modern tech stack with real-time validation and dynamic currency formatting.
+This applicatin is build with **Laravel** and **Vue 3**. It allows user to manage daily expenses with features including creating, viewing, updating, and deleting records (CRUD).
 
 ## Tech Stack
 
 * **Backend:** Laravel 10/11
-* **Frontend:** Vue 3 (Composition API)
+* **Frontend:** Vue 3
 * **Styling:** Tailwind CSS
 * **Database:** MySQL
 * **Build Tool:** Vite

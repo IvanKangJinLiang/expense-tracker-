@@ -211,7 +211,6 @@ const form = ref({
 });
 
 // --- API ACTIONS ---
-
 const fetchExpenses = async () => {
     try {
         const res = await axios.get("/expenses");
@@ -228,26 +227,21 @@ const submitExpense = async () => {
     isLoading.value = true;
 
     try {
-        // CSRF Token Check
         const token = document.querySelector('meta[name="csrf-token"]')?.getAttribute("content");
         if (token) {
             axios.defaults.headers.common["X-CSRF-TOKEN"] = token;
         }
 
         if (isEditing.value) {
-            // --- UPDATE (PUT) ---
-            // Note: Make sure your Laravel route is Route::put('/expenses/{id}', ...)
             await axios.put(`/expenses/${editingId.value}`, form.value);
             successMessage.value = "Expense updated successfully!";
         } else {
-            // --- CREATE (POST) ---
             await axios.post("/expenses", form.value);
             successMessage.value = "Expense saved successfully!";
         }
 
-        // Refresh List & Reset Form
         await fetchExpenses();
-        cancelEdit(); // Helper to reset the form
+        cancelEdit(); 
 
         // Hide success message after 3 seconds
         setTimeout(() => (successMessage.value = ""), 3000);
@@ -268,15 +262,12 @@ const deleteExpense = async (id) => {
     if (!confirm("Are you sure you want to delete this expense?")) return;
 
     try {
-        // Make sure your Laravel route is Route::delete('/expenses/{id}', ...)
         await axios.delete(`/expenses/${id}`);
-        
-        // Refresh and show feedback
+
         await fetchExpenses();
         successMessage.value = "Expense deleted successfully!";
         setTimeout(() => (successMessage.value = ""), 3000);
         
-        // If we deleted the item we were currently editing, cancel edit mode
         if (isEditing.value && editingId.value === id) {
             cancelEdit();
         }
@@ -286,28 +277,22 @@ const deleteExpense = async (id) => {
     }
 };
 
-// --- HELPER FUNCTIONS ---
-
 const editExpense = (expense) => {
-    // Populate form with existing data
     form.value = {
         description: expense.description,
         amount: expense.amount,
         currency: expense.currency,
-        expense_date: expense.expense_date, // Format should be YYYY-MM-DD from backend
+        expense_date: expense.expense_date, 
     };
-    
-    // Set Edit Mode
+
     isEditing.value = true;
     editingId.value = expense.id;
-    errors.value = {}; // Clear old errors
+    errors.value = {};
 
-    // Scroll to top to see the form
     window.scrollTo({ top: 0, behavior: 'smooth' });
 };
 
 const cancelEdit = () => {
-    // Reset to "Add New" mode
     form.value = {
         description: "",
         amount: "",
